@@ -43,6 +43,7 @@ export function Auth<TProviders extends Providers>({
     const redirectTo = url.searchParams.get('redirect_to') ?? '/'
     const providerName = String(url.pathname.split('/').pop())
     const provider = providers[providerName]
+    if (!provider) throw new Error(`Provider ${providerName} is not supported`)
 
     // Handle mobile development redirects
     if (
@@ -80,6 +81,7 @@ export function Auth<TProviders extends Providers>({
     const url = new URL(request.url)
     const providerName = String(url.pathname.split('/').slice(-2, -1))
     const provider = providers[providerName]
+    if (!provider) throw new Error(`Provider ${providerName} is not supported`)
 
     // Get parameters from URL and cookies
     const code = url.searchParams.get('code')

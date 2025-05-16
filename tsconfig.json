@@ -1,16 +1,33 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    /** Base Options */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
     "allowJs": true,
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "module": "preserve",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    "strictNullChecks": true,
-
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    /** Keep TSC performant in monorepos */
+    "incremental": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
+    /** Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+    /** Transpile using Bundler (not tsc) */
+    "moduleResolution": "Bundler",
+    /** Emit types for internal packages to speed up editor performance. */
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    /** React Options */
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "module": "esnext",
+    /** Paths Alias */
     "baseUrl": ".",
     "paths": {
       "@client/*": ["./src/client/*"],

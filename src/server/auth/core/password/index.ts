@@ -33,7 +33,7 @@ export class Password {
 
     const [salt, key] = parts
     const targetKey = await this.generateKey(password.normalize('NFKC'), salt)
-    return constantTimeEqual(targetKey, decodeHex(key))
+    return constantTimeEqual(targetKey, decodeHex(key ?? ''))
   }
 
   private async generateKey(data: string, salt?: string): Promise<Uint8Array> {

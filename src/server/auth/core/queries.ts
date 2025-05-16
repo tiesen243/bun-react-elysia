@@ -26,6 +26,7 @@ async function createSession(
     .insert(sessions)
     .values({ token, expires, userId })
     .returning()
+  if (!session) throw new Error('Failed to create session')
 
   // Return the unhashed token to the client along with expiration
   return { sessionToken, expires: session.expires }
@@ -87,7 +88,7 @@ async function verifyCredentials(input: {
     )
 
   if (
-    !user.password ||
+    !user?.password ||
     !(await new Password().verify(user.password, input.password))
   )
     throw new Error('Invalid email or password')
@@ -126,6 +127,7 @@ async function getOrCreateUserFromOAuth(data: {
     }
 
     const [newUser] = await tx.insert(users).values(data).returning()
+    if (!newUser) throw new Error('Failed to create user')
 
     await tx.insert(accounts).values({
       provider,
