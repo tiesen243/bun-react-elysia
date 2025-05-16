@@ -34,3 +34,10 @@ export const postRouter = new Elysia({ prefix: '/post' })
 
     return { message: 'Post created successfully' }
   })
+  .delete('/remove/:id', async ({ request, params: { id }, status }) => {
+    const session = await auth(request)
+    if (!session.user) return status('Unauthorized')
+
+    await db.delete(posts).where(eq(posts.id, id))
+    return { message: 'Post deleted successfully' }
+  })

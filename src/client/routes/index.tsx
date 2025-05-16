@@ -33,9 +33,7 @@ export function IndexPage() {
     schema: z.object({ title: z.string().min(1), content: z.string().min(1) }),
     defaultValues: { title: '', content: '' },
     submitFn: async (values) => {
-      const { data, error, response } = await api.post.create.post(values)
-      console.log(response)
-
+      const { data, error } = await api.post.create.post(values)
       if (error) throw new Error(error.value)
       return data
     },
@@ -89,7 +87,7 @@ export function IndexPage() {
             )}
           />
 
-          <Button>Create Post</Button>
+          <Button disabled={form.isPending}>Create Post</Button>
         </Form>
 
         {isLoading
