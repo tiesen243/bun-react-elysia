@@ -8,6 +8,8 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 
 import { SessionProvider } from '@client/hooks/use-session'
 import { createQueryClient } from '@client/lib/query-client'
+/* Routes */
+import { AboutPage } from '@client/routes/about'
 import { IndexPage } from '@client/routes/index'
 
 const queryClient = createQueryClient()
@@ -21,6 +23,7 @@ const app = (
           <BrowserRouter>
             <Routes>
               <Route index element={<IndexPage />} />
+              <Route path="/about" element={<AboutPage />} />
             </Routes>
           </BrowserRouter>
         </SessionProvider>
