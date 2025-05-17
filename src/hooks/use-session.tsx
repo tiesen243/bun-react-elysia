@@ -56,7 +56,7 @@ function SessionProvider({
     async (token?: string): Promise<void> => {
       setIsLoading(true)
       try {
-        const res = await fetch('/api/auth/get-session', {
+        const res = await fetch('/api/auth', {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         })
         if (!res.ok) throw new Error(`Failed to fetch session: ${res.status}`)
@@ -102,7 +102,7 @@ function SessionProvider({
       } else {
         const redirectTo =
           (args[0] as { redirectTo?: string } | undefined)?.redirectTo ?? '/'
-        window.location.href = `/api/auth/sign-in/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`
+        window.location.href = `/api/auth/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`
         return undefined as TProvider extends 'credentials' ? string : undefined
       }
     },

@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 
 import { router } from '@/app/router'
+import { SessionProvider } from '@/hooks/use-session'
 import { createQueryClient } from '@/lib/query-client'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
@@ -21,7 +22,9 @@ const app = (
   <StrictMode>
     <ThemeProvider attribute="class" disableTransitionOnChange>
       <QueryClientProvider client={getQueryClient()}>
-        <RouterProvider router={router} />
+        <SessionProvider>
+          <RouterProvider router={router} />
+        </SessionProvider>
       </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>

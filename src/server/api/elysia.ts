@@ -1,8 +1,9 @@
 import type { ElysiaConfig } from 'elysia'
 import Elysia from 'elysia'
 
-import { auth } from '@/server/auth'
+import { authOptions } from '@/server/auth/config'
 import { db } from '@/server/db'
+import { validateToken } from '../auth/core/queries'
 
 export const createElysia = <TPrefix extends string>(
   options?: ElysiaConfig<TPrefix>,
@@ -11,8 +12,13 @@ export const createElysia = <TPrefix extends string>(
     ...options,
     aot: true,
   })
-    .derive(async ({ request }) => {
-      const session = await auth(request)
+    .derive(async ({ cookie, headers }) => {
+      const token =
+        cookie[authOptions.cookieKey]?.value ??
+        headers.Authorization?.replace('Bearer ', '') ??
+        ''
+      const session = await validateToken(token)
+
       return { db, session }
     })
     .macro({
