@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 
 import { router } from '@/app/router'
+import { Toaster } from '@/components/ui/sonner'
 import { SessionProvider } from '@/hooks/use-session'
 import { createQueryClient } from '@/lib/query-client'
 
@@ -26,6 +27,8 @@ const app = (
           <RouterProvider router={router} />
         </SessionProvider>
       </QueryClientProvider>
+
+      <Toaster />
     </ThemeProvider>
   </StrictMode>
 )

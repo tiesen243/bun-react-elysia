@@ -5,6 +5,7 @@ import index from '@/index.html'
 import { server } from '@/server/api'
 
 const app = serve({
+  port: process.env.PORT ?? 3000,
   routes: {
     // Serve index.html for all unmatched routes.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
