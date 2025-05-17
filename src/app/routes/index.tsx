@@ -126,7 +126,7 @@ const PostCardSkeleton: React.FC = () => (
       </CardAction>
     </CardHeader>
 
-    <CardFooter>
+    <CardFooter className="flex-col gap-1">
       <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
       <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
       <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
