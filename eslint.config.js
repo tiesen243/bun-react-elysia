@@ -8,7 +8,7 @@ import hooksPlugin from 'eslint-plugin-react-hooks'
 import tseslint from 'typescript-eslint'
 
 const baseConfig = tseslint.config(
-  { ignores: ['*.config.*'] },
+  { ignores: ['*.config.*', 'build.ts', 'bun-env.d.ts'] },
   {
     files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     plugins: { import: importPlugin },
@@ -73,7 +73,7 @@ const reactConfig = [
 /** @type {import('typescript-eslint').Config} */
 export default [
   {
-    ignores: ['build.ts', 'dist/**'],
+    ignores: ['dist/**'],
   },
   ...baseConfig,
   ...reactConfig,

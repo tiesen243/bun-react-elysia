@@ -18,7 +18,6 @@
     "checkJs": true,
     /** Transpile using Bundler (not tsc) */
     "moduleResolution": "Bundler",
-    /** Emit types for internal packages to speed up editor performance. */
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
@@ -27,13 +26,12 @@
     "jsx": "react-jsx",
     "lib": ["ES2022", "dom", "dom.iterable"],
     "module": "esnext",
-    /** Paths Alias */
+    /** Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@client/*": ["./src/client/*"],
-      "@server/*": ["./src/server/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src", "bun-env.d.ts"],
   "exclude": ["dist", "node_modules"]
 }
