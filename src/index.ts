@@ -2,12 +2,19 @@ import { networkInterfaces } from 'os'
 import { serve } from 'bun'
 
 import index from './index.html'
+import { server } from './server'
 
 const app = serve({
   routes: {
     // Serve index.html for all unmatched routes.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     '/*': index,
+    '/api/*': {
+      GET: server.handle,
+      POST: server.handle,
+      PUT: server.handle,
+      DELETE: server.handle,
+    },
   },
 
   development: process.env.NODE_ENV !== 'production' && {

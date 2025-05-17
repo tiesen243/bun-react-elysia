@@ -1,4 +1,15 @@
+import { useEffect } from 'react'
+
+import { api } from '@/lib/api'
+
 export function IndexPage() {
+  useEffect(() => {
+    void (async () => {
+      const res = await api.post.get()
+      console.log(res)
+    })()
+  }, [])
+
   return (
     <main>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
