@@ -24,15 +24,21 @@ import { Input } from '@/components/ui/input'
 import { usePost } from '@/hooks/use-post'
 
 export function IndexPage() {
-  const { posts } = usePost()
+  const { posts, isLoading } = usePost()
 
   return (
     <main className="container grid max-w-xl gap-4 py-4">
       <CreatePost />
       <h1 className="text-2xl font-bold">Posts</h1>
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      {isLoading ? (
+        <>
+          <PostCardSkeleton />
+          <PostCardSkeleton />
+          <PostCardSkeleton />
+        </>
+      ) : (
+        posts.map((post) => <PostCard key={post.id} post={post} />)
+      )}
     </main>
   )
 }
@@ -83,21 +89,47 @@ const CreatePost: React.FC = () => {
 const PostCard: React.FC<{
   post: typeof posts.$inferSelect
 }> = ({ post }) => {
-  const { deletePost } = usePost()
+  const { deletePost, isDeleting } = usePost()
 
   return (
-    <Card key={post.id}>
+    <Card>
       <CardHeader>
         <CardTitle>{post.title}</CardTitle>
         <CardDescription>{post.createdAt.toString()}</CardDescription>
         <CardAction>
-          <Button onClick={() => deletePost(post.id)}>
+          <Button onClick={() => deletePost(post.id)} disabled={isDeleting}>
             <XIcon />
           </Button>
         </CardAction>
       </CardHeader>
 
-      <CardFooter>{post.content}</CardFooter>
+      <CardFooter>
+        <p>{post.content}</p>
+      </CardFooter>
     </Card>
   )
 }
+
+const PostCardSkeleton: React.FC = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="w-1/2 animate-pulse rounded-sm bg-current">
+        &nbsp;
+      </CardTitle>
+      <CardDescription className="w-2/3 animate-pulse rounded-sm bg-current">
+        &nbsp;
+      </CardDescription>
+      <CardAction>
+        <Button>
+          <XIcon />
+        </Button>
+      </CardAction>
+    </CardHeader>
+
+    <CardFooter>
+      <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
+      <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
+      <p className="w-full animate-pulse rounded-sm bg-current">&nbsp;</p>
+    </CardFooter>
+  </Card>
+)
