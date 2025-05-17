@@ -1,7 +1,8 @@
-import { Database } from 'bun:sqlite'
-import { drizzle } from 'drizzle-orm/bun-sqlite'
+import { drizzle } from 'drizzle-orm/node-postgres'
 
 import * as schema from '@/server/db/schema'
 
-const sql = new Database('sqlite.db')
-export const db = drizzle({ client: sql, schema })
+export const db = drizzle(process.env.DATABASE_URL ?? '', {
+  schema,
+  casing: 'snake_case',
+})

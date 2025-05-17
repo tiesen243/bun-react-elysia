@@ -1,18 +1,20 @@
 import { t } from 'elysia'
 
 import { createElysia } from '@/server/api/elysia'
-import { db } from '@/server/db'
 import { posts } from '@/server/db/schema'
 
 export const postRouter = createElysia({ prefix: '/post' })
-  .get('/', async () => {
-    return db.query.posts.findMany()
-  })
+  .get('/', (ctx) => ctx.db.query.posts.findMany())
   .post(
     '/',
-    async ({ body }) => {
-      await db.insert(posts).values(body)
+    async (ctx) => {
+      await ctx.db
+        .insert(posts)
+        .values({ ...ctx.body, authorId: ctx.session.user.id })
       return true
     },
-    { body: t.Object({ title: t.String(), content: t.String() }) },
+    {
+      body: t.Object({ title: t.String(), content: t.String() }),
+      protected: true,
+    },
   )

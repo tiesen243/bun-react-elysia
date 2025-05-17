@@ -17,14 +17,7 @@ export function IndexPage() {
 
   const addPost = useMutation({
     mutationKey: ['post', 'create'],
-    mutationFn: async () => {
-      const { data, error } = await api.post.post({
-        title: 'Hello World',
-        content: 'This is a test post',
-      })
-      if (error) throw error.value
-      return data
-    },
+    mutationFn: api.post.post,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ['post', 'all'] }),
   })
@@ -34,7 +27,10 @@ export function IndexPage() {
       <Button
         className="mb-4"
         onClick={() => {
-          addPost.mutate()
+          addPost.mutate({
+            title: 'Hello World',
+            content: 'This is a test post',
+          })
         }}
         disabled={addPost.isPending}
       >
