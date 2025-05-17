@@ -14,7 +14,7 @@ export const authRouter = createElysia({ prefix: '/auth' })
   .get('/', ({ session }) => session)
   .get(
     '/:provider',
-    ({ params, status, query, cookie, redirect }) => {
+    ({ params, query, status, cookie, redirect }) => {
       const provider =
         authOptions.providers[
           params.provider as keyof typeof authOptions.providers
@@ -60,7 +60,7 @@ export const authRouter = createElysia({ prefix: '/auth' })
   )
   .get(
     '/:provider/callback',
-    async ({ params, cookie, query, status, redirect }) => {
+    async ({ params, query, status, cookie, redirect }) => {
       const provider =
         authOptions.providers[
           params.provider as keyof typeof authOptions.providers
@@ -116,7 +116,7 @@ export const authRouter = createElysia({ prefix: '/auth' })
       }),
     },
   )
-  .post('/sign-out', async ({ cookie, headers }) => {
+  .post('/sign-out', async ({ headers, cookie }) => {
     const token =
       cookie[authOptions.cookieKey]?.value ??
       headers.Authorization?.replace('Bearer ', '') ??
