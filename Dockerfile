@@ -9,7 +9,6 @@ RUN bun install
 
 # copy the rest of the app
 COPY . .
-COPY .env .env
 
 # run the app
 EXPOSE 3000/tcp
