@@ -1,4 +1,3 @@
-import { ThemeProvider } from 'next-themes'
 import { Link, Outlet } from 'react-router'
 
 import { ToggleTheme } from '@/components/toggle-theme'
@@ -6,7 +5,7 @@ import Logo from '@/logo.svg'
 
 export function RootLayout() {
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange>
+    <>
       <header className="bg-background/70 flex h-16 items-center border-b">
         <div className="container flex items-center justify-between gap-4">
           <img src={Logo} alt="Logo" className="size-8" />
@@ -20,6 +19,6 @@ export function RootLayout() {
         </div>
       </header>
       <Outlet />
-    </ThemeProvider>
+    </>
   )
 }

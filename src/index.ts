@@ -1,8 +1,8 @@
 import { networkInterfaces } from 'os'
 import { serve } from 'bun'
 
-import index from './index.html'
-import { server } from './server'
+import index from '@/index.html'
+import { server } from '@/server/api'
 
 const app = serve({
   routes: {

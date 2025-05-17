@@ -1,15 +1,29 @@
 import '@/app/globals.css'
 
+import type { QueryClient } from '@tanstack/react-query'
 import { StrictMode } from 'react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 
 import { router } from '@/app/router'
+import { createQueryClient } from '@/lib/query-client'
+
+let clientQueryClientSingleton: QueryClient | undefined = undefined
+const getQueryClient = () => {
+  if (typeof window === 'undefined') return createQueryClient()
+  else return (clientQueryClientSingleton ??= createQueryClient())
+}
 
 const elem = document.getElementById('root')
 const app = (
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider attribute="class" disableTransitionOnChange>
+      <QueryClientProvider client={getQueryClient()}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>
 )
 
