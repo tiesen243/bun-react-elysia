@@ -5,7 +5,9 @@ import { createElysia } from '@/server/api/elysia'
 import { posts } from '@/server/db/schema'
 
 export const postRouter = createElysia({ prefix: '/post' })
-  .get('/', ({ db }) => db.query.posts.findMany())
+  .get('/', ({ db }) =>
+    db.query.posts.findMany({ orderBy: (t, { desc }) => desc(t.createdAt) }),
+  )
   .post(
     '/create',
     async ({ session, db, body }) => {
