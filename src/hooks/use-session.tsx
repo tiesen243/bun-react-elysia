@@ -3,6 +3,7 @@
 import * as React from 'react'
 
 import type { Options, SessionResult } from '@/server/auth/types'
+import { api } from '@/lib/api'
 
 type Provider = 'credentials' | keyof Options['providers']
 
@@ -56,13 +57,12 @@ function SessionProvider({
     async (token?: string): Promise<void> => {
       setIsLoading(true)
       try {
-        const res = await fetch('/api/auth', {
+        const { data, error } = await api.auth.get({
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         })
-        if (!res.ok) throw new Error(`Failed to fetch session: ${res.status}`)
+        if (error) throw new Error(`Failed to fetch session: ${error.status}`)
 
-        const sessionData = (await res.json()) as SessionResult
-        setSession(sessionData)
+        setSession(data)
       } catch (error) {
         console.error('Error fetching session:', error)
         setSession({ expires: new Date() })
@@ -82,17 +82,12 @@ function SessionProvider({
     ): Promise<TProvider extends 'credentials' ? string : undefined> => {
       if (provider === 'credentials') {
         try {
-          const res = await fetch('/api/auth/sign-in', {
-            method: 'POST',
-            body: JSON.stringify(args[0]),
-          })
-
-          const json = (await res.json()) as { token: string; error: string }
-
-          if (!res.ok) throw new Error(json.error || 'Authentication failed')
-
-          await fetchSession(json.token)
-          return json.token as TProvider extends 'credentials'
+          const { data, error } = await api.auth['sign-in'].post(
+            args[0] as { email: string; password: string },
+          )
+          if (error) throw new Error(error.value.message)
+          await fetchSession(data.token)
+          return data.token as TProvider extends 'credentials'
             ? string
             : undefined
         } catch (error) {
@@ -111,8 +106,8 @@ function SessionProvider({
 
   const signOut = React.useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch('/api/auth/sign-out', { method: 'POST' })
-      if (!res.ok) throw new Error(`Sign out failed: ${res.status}`)
+      const { error } = await api.auth['sign-out'].post()
+      if (error) throw new Error(`Sign out failed: ${error.status}`)
       setSession({ expires: new Date() })
       window.location.reload()
     } catch (error) {

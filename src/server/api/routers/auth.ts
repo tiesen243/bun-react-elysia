@@ -107,7 +107,7 @@ export const authRouter = createElysia({ prefix: '/auth' })
         value: sessionToken,
         expires,
       })
-      return true
+      return { token: sessionToken }
     },
     {
       body: t.Object({
